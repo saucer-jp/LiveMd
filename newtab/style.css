@@ -1,0 +1,59 @@
+.input-area {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  background: #f6f6f6;
+  outline: 0;
+  border: 0;
+  margin: 0;
+  padding: 1em;
+  box-sizing: border-box;
+  font-size: 1em;
+  color: #666;
+}
+
+.output-area {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: 0;
+  padding: 1em 2em;
+  overflow: scroll;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ccc;
+}
+
+.download {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 2;
+    background-color: #48c9b0;
+    color: #fff;
+    padding: 5px 10px 3px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 10px;
+}
+.download:hover {
+    background-color: #1abc9c;
+}
+.download:not([href]) {
+    color: rgba(255,255,255,0.7);
+    background-color: #bdc3c7;
+    cursor: default;
+    pointer-events: none;
+}

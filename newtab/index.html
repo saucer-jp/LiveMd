@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>using markdown on browser with marked</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="memo">
+    <a class="download" download="memo.md" href="{{input | createObjectURL}}">Download This Markdown</a>
+    <textarea class="input-area" v-model="input"></textarea>
+    <div class="output-area" v-html="input | marked"></div>
+  </div>
+
+
+  <script src="vue.min.js"></script>
+  <script src="marked.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

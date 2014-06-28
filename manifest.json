@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "memo with markdown",
+  "description": "Using markdown on browser with marked",
+  "version": "0.1",
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
