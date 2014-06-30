@@ -56,6 +56,12 @@ blockquote {
   padding-left: 1em;
 }
 
+hr {
+  border: 0;
+  border-bottom: 1px dashed #666;
+  margin: 3em 0;
+}
+
 
 /* download button */
 
