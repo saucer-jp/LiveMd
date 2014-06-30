@@ -24,6 +24,10 @@
   overflow: scroll;
 }
 
+h2 {
+  border-bottom: 1px solid #ccc;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
