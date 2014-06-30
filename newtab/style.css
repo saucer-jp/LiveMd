@@ -22,6 +22,7 @@
   right: 0;
   padding: 1em 2em;
   overflow: scroll;
+  line-height: 1.8;
 }
 
 h2 {
