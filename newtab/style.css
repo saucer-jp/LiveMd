@@ -35,6 +35,22 @@ td {
   border: 1px solid #ccc;
 }
 
+th,
+td {
+  padding: 0.25em 0.5em;
+}
+
+th {
+  background-color: #eee;
+}
+
+blockquote {
+  color: #aaa;
+  border-left: 4px solid #ccc;
+  margin-left: 0;
+  padding-left: 1em;
+}
+
 
 /* download button */
 
