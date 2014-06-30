@@ -35,6 +35,9 @@ td {
   border: 1px solid #ccc;
 }
 
+
+/* download button */
+
 .download {
     position: absolute;
     top: 5px;
