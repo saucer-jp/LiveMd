@@ -25,6 +25,14 @@
   line-height: 1.8;
 }
 
+h1 {
+  margin-top: 2.5em;
+}
+
+.output-area h1:nth-child(1) {
+  margin-top: 0.5em;
+}
+
 h2 {
   border-bottom: 1px solid #ccc;
 }
