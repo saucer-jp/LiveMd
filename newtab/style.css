@@ -54,6 +54,8 @@ blockquote {
   border-left: 4px solid #ccc;
   margin-left: 0;
   padding-left: 1em;
+  font-size: 0.9em;
+  line-height: 1.7;
 }
 
 hr {
