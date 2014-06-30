@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('SourceCodePro-Medium.ttf') format('truetype');
+}
+
 .input-area {
   position: absolute;
   top: 0;
@@ -64,6 +69,19 @@ blockquote {
   padding-left: 1em;
   font-size: 0.9em;
   line-height: 1.7;
+}
+
+code {
+  font-family: 'Source Code Pro';
+  font-weight: 500;
+  display: block;
+  padding: 0.5em 0.7em;
+  background-color: #eee;
+  border-radius: 4px;
+  line-height: 1.2em;
+  font-size: 0.9em;
+  overflow: auto;
+  white-space: pre;
 }
 
 hr {
