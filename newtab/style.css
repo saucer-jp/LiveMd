@@ -71,17 +71,23 @@ blockquote {
   line-height: 1.7;
 }
 
+pre > code {
+  overflow: auto;
+  white-space: pre;
+  display: block;
+  background-color: #eee;
+  padding: 0.5em 0.7em;
+}
+
 code {
   font-family: 'Source Code Pro';
   font-weight: 500;
-  display: block;
-  padding: 0.5em 0.7em;
+  padding: 0.2em 0.5em;
+  margin: 0 0.2em;
   background-color: #eee;
   border-radius: 4px;
   line-height: 1.2em;
   font-size: 0.9em;
-  overflow: auto;
-  white-space: pre;
 }
 
 hr {
