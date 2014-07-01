@@ -1,7 +1,5 @@
-## 拡張のインストール
+### LiveMd is a Chrome Extension
 
-1. MemoChromeExtensionをcloneするなり、ZIPをダウンロードするなりする
-2. Chromeの拡張をデベロッパモードにする
-3. 「パッケージ化されていない機能拡張を読み込む…」からMemoChromeExtensionフォルダを選ぶ
+Using markdown to write a memo on browser with marked
 
-以上。あとはアドレスバー横に表示されたアイコンを押す。
+[LiveMd](https://chrome.google.com/webstore/detail/livemd/gdkdfndgjifoabdbagnmodicadpngfko?utm_source=chrome-ntp-icon&authuser=1)
