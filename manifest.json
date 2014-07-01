@@ -1,9 +1,14 @@
 {
   "manifest_version": 2,
 
-  "name": "memo with markdown",
+  "name": "LiveMd",
   "description": "Using markdown on browser with marked",
   "version": "0.1",
+
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
 
   "browser_action": {
     "default_icon": "icon.png",
