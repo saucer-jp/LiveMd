@@ -24,6 +24,6 @@ var memo = new Vue({
   },
 
   ready: function(){
-    this.$el.querySelector('.input-area').focus();
+    this.$el.querySelector('.input-area textarea').focus();
   }
 });
