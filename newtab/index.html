@@ -7,11 +7,14 @@
 </head>
 <body>
 
-  <div id="memo">
-    <a class="download" download="memo.md" href="{{input | createObjectURL}}">Download This Markdown</a>
-    <textarea class="input-area" v-model="input"></textarea>
-    <div class="output-area" v-html="input | marked"></div>
+  <div class="flex">
+    <div class="flexItem1 drawer opened"></div>
+    <div class="flexItem2 input-area">
+      <textarea v-model="input"></textarea>
+    </div>
+    <div class="flexItem3 output-area" v-html="input | marked"></div>
   </div>
+  <a class="download" download="memo.md" href="{{input | createObjectURL}}">Download This Markdown</a>
 
 
   <script src="vue.min.js"></script>

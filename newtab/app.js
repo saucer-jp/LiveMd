@@ -3,7 +3,7 @@
 // start vue.js code
 
 var memo = new Vue({
-  el: '#memo',
+  el: 'body',
 
   data: {
     input: ''
