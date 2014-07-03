@@ -3,10 +3,11 @@
 // start vue.js code
 
 var memo = new Vue({
-  el: 'body',
+  el: 'html',
 
   data: {
-    input: ''
+    input: '',
+    firstLineStr: ''
   },
 
   filters: {
@@ -24,6 +25,22 @@ var memo = new Vue({
   },
 
   ready: function(){
+    this.$watch('input', this._watch);
+    this.firstLineStr = this.getFirstLineStr();
     this.$el.querySelector('.input-area textarea').focus();
+  },
+
+  methods: {
+    _watch: function(){
+      this.firstLineStr = this.getFirstLineStr();
+    },
+    getFirstLineStr: function(){
+      var firstLine = this.input.match(/.*/).toString().trim();
+      if( firstLine === '' ){
+        return 'new';
+      } else {
+        return firstLine;
+      }
+    }
   }
 });
