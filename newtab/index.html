@@ -14,7 +14,7 @@
     </div>
     <div class="flexItem3 output-area" v-html="input | marked"></div>
   </div>
-  <a class="download" download="{{firstLineStr}}.md" href="{{input | createObjectURL}}">Download This Markdown</a>
+  <a class="download" title="{{firstLineStr}}.md" download="{{firstLineStr}}.md" href="{{input | createObjectURL}}">Download This Markdown</a>
 
 
   <script src="vue.min.js"></script>
