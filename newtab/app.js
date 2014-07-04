@@ -7,7 +7,7 @@ var memo = new Vue({
 
   data: {
     input: '',
-    firstLineStr: ''
+    firstlineStr: ''
   },
 
   filters: {
@@ -26,20 +26,28 @@ var memo = new Vue({
 
   ready: function(){
     this.$watch('input', this._watch);
-    this.firstLineStr = this.getFirstLineStr();
+    this.firstlineStr = this.getFirstlineStr();
     this.$el.querySelector('.input-area textarea').focus();
   },
 
   methods: {
     _watch: function(){
-      this.firstLineStr = this.getFirstLineStr();
+      this.firstlineStr = this.getFirstlineStr();
     },
-    getFirstLineStr: function(){
-      var firstLine = this.input.match(/.*/).toString().trim();
-      if( firstLine === '' ){
+
+    getFirstlineStr: function(){
+      var regexp = {
+        firstline: /.*/,
+        mdSyntax: /^[#|\*]* */
+      };
+      var md = this.input;
+      var firstline = md.match( regexp.firstline ).toString().trim();
+      var optimized = firstline.replace( regexp.mdSyntax, '' );
+
+      if( firstline === '' ){
         return 'new';
       } else {
-        return firstLine;
+        return optimized;
       }
     }
   }
