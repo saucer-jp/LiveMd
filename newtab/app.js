@@ -21,26 +21,12 @@ var memo = new Vue({
       );
     },
 
-    marked: marked
-  },
-
-  ready: function(){
-    this.$watch('input', this._watch);
-    this.firstlineStr = this.getFirstlineStr();
-  },
-
-  methods: {
-    _watch: function(){
-      this.firstlineStr = this.getFirstlineStr();
-    },
-
-    getFirstlineStr: function(){
+    getFirstlineStr: function( str ){
       var regexp = {
         firstline: /.*/,
         mdSyntax: /^[#|\*]* */
       };
-      var md = this.input;
-      var firstline = md.match( regexp.firstline ).toString().trim();
+      var firstline = str.match( regexp.firstline ).toString().trim();
       var optimized = firstline.replace( regexp.mdSyntax, '' );
 
       if( firstline === '' ){
@@ -48,6 +34,14 @@ var memo = new Vue({
       } else {
         return optimized;
       }
-    }
+    },
+
+    marked: marked
+  },
+
+  ready: function(){
+  },
+
+  methods: {
   }
 });

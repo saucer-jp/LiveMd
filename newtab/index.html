@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>{{firstlineStr}} - LiveMd</title>
+  <title>{{input | getFirstlineStr}} - LiveMd</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,7 +14,7 @@
     </div>
     <div class="flexItem3 output-area" v-html="input | marked"></div>
   </div>
-  <a class="download" title="{{firstlineStr}}.md" download="{{firstlineStr}}.md" href="{{input | createObjectURL}}">Download This Markdown</a>
+  <a class="download" title="{{input | getFirstlineStr}}.md" download="{{input | getFirstlineStr}}.md" href="{{input | createObjectURL}}">Download This Markdown</a>
 
 
   <script src="vue.min.js"></script>
