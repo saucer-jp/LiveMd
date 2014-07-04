@@ -27,7 +27,6 @@ var memo = new Vue({
   ready: function(){
     this.$watch('input', this._watch);
     this.firstlineStr = this.getFirstlineStr();
-    this.$el.querySelector('.input-area textarea').focus();
   },
 
   methods: {

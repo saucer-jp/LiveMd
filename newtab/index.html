@@ -10,7 +10,7 @@
   <div class="flex">
     <div class="flexItem1 drawer opened"></div>
     <div class="flexItem2 input-area">
-      <textarea v-model="input"></textarea>
+      <textarea v-model="input" autofocus></textarea>
     </div>
     <div class="flexItem3 output-area" v-html="input | marked"></div>
   </div>
