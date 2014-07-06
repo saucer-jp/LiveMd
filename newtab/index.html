@@ -2,19 +2,27 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>{{input | getFirstlineStr}} - LiveMd</title>
+  <title>{{current.title}} - LiveMd</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="flex">
-    <div class="flexItem1 drawer opened"></div>
-    <div class="flexItem2 input-area">
-      <textarea v-model="input" autofocus></textarea>
+    <div class="flexItem1 drawer opened">
+      <span v-on="click: createNewMemo">new memo</span>
+      <ol>
+        <li v-repeat="titles">
+          <span v-on="click: renderMemo( this.id )" title="{{title}}">{{title}}</span>
+          <span v-on="click: removeMemo( this.id )">x</span>
+        </li>
+      </ol>
     </div>
-    <div class="flexItem3 output-area" v-html="input | marked"></div>
+    <div class="flexItem2 input-area">
+      <textarea v-model="current.md" autofocus></textarea>
+    </div>
+    <div class="flexItem3 output-area" v-html="current.md | marked"></div>
   </div>
-  <a class="download" title="{{input | getFirstlineStr}}.md" download="{{input | getFirstlineStr}}.md" href="{{input | createObjectURL}}">Download This Markdown</a>
+  <a class="download" title="{{current.title}}.md" download="{{current.title}}.md" href="{{current.md | createObjectURL}}">Download This Markdown</a>
 
 
   <script src="vue.min.js"></script>
