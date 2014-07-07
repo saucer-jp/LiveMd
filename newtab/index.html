@@ -11,7 +11,7 @@
     <div class="flexItem1 drawer opened">
       <span v-on="click: createNewMemo">new memo</span>
       <ol>
-        <li v-repeat="titles">
+        <li v-repeat="titles" class="memoList {{+current.id === this.id ? 'current' : ''}}">
           <span v-on="click: renderMemo( this.id )" title="{{title}}">{{title}}</span>
           <span v-on="click: removeMemo( this.id )">x</span>
         </li>

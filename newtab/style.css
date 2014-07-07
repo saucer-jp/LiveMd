@@ -11,6 +11,10 @@ body {
   overflow: hidden;
 }
 
+.memoList.current {
+  color: red;
+}
+
 /* flex box styles */
 
 .flex {
