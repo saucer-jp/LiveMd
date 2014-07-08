@@ -11,11 +11,8 @@
   <div class="flex">
     <div class="flexItem1 menu">
       <i v-on="click: createNewMemo" class="fa fa-plus-square" title="Add new Memo"></i>
-      <!--
-      <i class="fa fa-download" title="Download this Memo"></i>
-      -->
-      <i v-on="click: changeMenu( 'change' )" v-class="current: isMemoChangeOpened" class="toggleMenuBtnToChange fa fa-file-text" title="Show the list"></i>
-      <i v-on="click: changeMenu( 'remove' )" v-class="current: isMemoRemoveOpened" class="toggleMenuBtnToRemove fa fa-scissors" title="Show the list to remove"></i>
+      <i v-on="click: toggleMenu( 'change' )" v-class="current: isMemoChangeOpened" class="toggleMenuBtnToChange fa fa-file-text" title="Show the list"></i>
+      <i v-on="click: toggleMenu( 'remove' )" v-class="current: isMemoRemoveOpened" class="toggleMenuBtnToRemove fa fa-scissors" title="Show the list to remove"></i>
       <a class="githubLink" href="https://github.com/saucer-jp/LiveMd" target="new">
 
         <!-- id="logotype" -->

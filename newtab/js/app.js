@@ -93,10 +93,7 @@ var app = new Vue({
     },
 
     // 通常のMemolistsとメモ削除用のlistsの切り替え
-    changeMenu: function( value ){
-      console.log( 'changeMenu' );
-      console.log( '  value: ' + value );
-
+    toggleMenu: function( value ){
       var change = this.isMemoChangeOpened;
       var remove = this.isMemoRemoveOpened;
 
@@ -105,7 +102,6 @@ var app = new Vue({
         if( this.isMemoRemoveOpened ){
           this.isMemoRemoveOpened = !this.isMemoRemoveOpened;
         }
-        return;
       }
 
       if( value === 'remove' ){
@@ -113,9 +109,8 @@ var app = new Vue({
         if( this.isMemoChangeOpened ){
           this.isMemoChangeOpened = !this.isMemoChangeOpened;
         }
-        return;
       }
-
+      this.autoSave();
     },
 
     // 入力されたMarkdownからメモのタイトルを作成して差し替え
@@ -216,15 +211,19 @@ var app = new Vue({
 
     // storageへ自動セーブ
     autoSave: function(){
-      var id = this.current.id
+      var id = this.current.id;
       var keys = {
         currentID: 'currentID',
         md: 'md' + id,
-        titles: 'titles'
-      }
-      storage.setItem( keys.currentID, id )
+        titles: 'titles',
+        isMemoChangeOpened: 'isMemoChangeOpened',
+        isMemoRemoveOpened: 'isMemoRemoveOpened'
+      };
+      storage.setItem( keys.currentID, id );
       storage.setItem( keys.titles, JSON.stringify( this.titles ) );
       storage.setItem( keys.md, this.current.md);
+      storage.setItem( keys.isMemoChangeOpened, this.isMemoChangeOpened );
+      storage.setItem( keys.isMemoRemoveOpened, this.isMemoRemoveOpened );
     },
 
     // localStorageとの同期
@@ -258,8 +257,12 @@ var app = new Vue({
 
         // 入れ替えたtitlesを戻す
         this.titles = titles;
+
+        // 各種設定の読み込み
         this.current.id = storage.getItem( 'currentID' );
         this.current.md = storage.getItem( 'md' + this.current.id );
+        this.isMemoChangeOpened = JSON.parse( storage.getItem( 'isMemoChangeOpened' ));
+        this.isMemoRemoveOpened = JSON.parse( storage.getItem( 'isMemoRemoveOpened' ));
 
       // storageにデータがなかったら初期設定をする
       } else {
