@@ -9,21 +9,60 @@
 <body>
 
   <div class="flex">
-    <div class="flexItem1 drawer opened">
-      <span v-on="click: createNewMemo">new memo</span>
-      <ol>
-        <li v-repeat="titles" class="memoList" v-class="current: +current.id === this.id">
-          <span v-on="click: renderMemo( this.id )" title="{{title}}">{{title}}</span>
-          <span v-on="click: removeMemo( this.id )">x</span>
+    <div class="flexItem1 menu">
+      <i v-on="click: createNewMemo" class="fa fa-plus-square" title="Add new Memo"></i>
+      <!--
+      <i class="fa fa-download" title="Download this Memo"></i>
+      -->
+      <i v-on="click: changeMenu( 'change' )" v-class="current: isMemoChangeOpened" class="toggleMenuBtnToChange fa fa-file-text" title="Show the list"></i>
+      <i v-on="click: changeMenu( 'remove' )" v-class="current: isMemoRemoveOpened" class="toggleMenuBtnToRemove fa fa-scissors" title="Show the list to remove"></i>
+      <a class="githubLink" href="https://github.com/saucer-jp/LiveMd" target="new">
+
+        <!-- id="logotype" -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 60" enable-background="new 0 0 18 60" id="logotype">
+          <g fill="#0F181B">
+            <path d="M2.72 58v-2.88h11.92v-5.1h2.36v7.98h-14.28zM2.56 45.96h2.36v2.761h-2.36v-2.761zm3.68 0h10.76v2.761h-10.76v-2.761zM6.24 36.16l10.76 2.7v3.2l-10.76 2.78v-2.88l7.7-1.539v-.04l-7.7-1.46v-2.761zM12.9 32.78c.319 0 .63-.022.93-.069s.566-.123.8-.23c.233-.106.42-.246.561-.42.14-.173.21-.387.21-.64 0-.467-.167-.807-.5-1.021-.334-.213-.841-.359-1.521-.439v-2.48c1.254.054 2.207.387 2.86 1s.979 1.58.979 2.9c0 1-.167 1.779-.5 2.34-.333.56-.772.974-1.319 1.24s-1.16.43-1.841.489c-.68.061-1.359.091-2.04.091-.72 0-1.413-.051-2.079-.15-.667-.1-1.261-.3-1.78-.6-.521-.301-.934-.73-1.24-1.29-.307-.561-.46-1.307-.46-2.24 0-.8.13-1.457.39-1.97.261-.514.627-.917 1.101-1.211.474-.293 1.047-.492 1.72-.6.674-.106 1.424-.16 2.25-.16h.62v5.46h.859zm-3.59-2.739c-.312.039-.579.109-.8.21-.22.1-.387.239-.5.42-.113.18-.17.409-.17.689s.063.51.19.69c.127.18.293.323.5.43.207.107.437.184.689.23.254.047.507.069.761.069h.42v-2.819c-.413.014-.777.041-1.09.081zM2.72 21.461l10.08-2.04v-.04l-10.08-2.061v-4.26h14.28v2.641h-11.4v.04l11.4 2.54v2.239l-11.4 2.54v.04h11.4v2.641h-14.28v-4.28zM15.86 6.001c.507.308.859.65 1.06 1.03s.3.851.3 1.41c0 1.134-.433 1.967-1.3 2.5-.866.533-2.3.8-4.3.8s-3.443-.267-4.33-.8-1.33-1.366-1.33-2.5c0-.521.106-.963.32-1.33.213-.366.533-.696.96-.99v-.04h-4.52v-2.76h14.28v2.64h-1.14v.04zm-1.59 2.71c.594-.18.891-.569.891-1.17 0-.612-.297-1.01-.891-1.189-.593-.181-1.477-.271-2.649-.271s-2.057.09-2.65.271c-.593.18-.89.577-.89 1.189 0 .601.297.99.89 1.17.594.181 1.478.271 2.65.271s2.056-.09 2.649-.271z"/>
+          </g>
+        </svg> 
+
+        <!-- id="logomark" -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" enable-background="new 0 0 18 18" id="logomark">
+          <path fill="#2FA9F4" d="M18 16.594c0 .773-.633 1.406-1.406 1.406h-15.188c-.773 0-1.406-.633-1.406-1.406v-15.188c0-.773.633-1.406 1.406-1.406h15.188c.773 0 1.406.633 1.406 1.406v15.188z"/>
+          <g opacity=".2">
+            <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="9" y1="18" x2="9">
+              <stop offset="0"/>
+              <stop offset="1" stop-color="#fff"/>
+            </linearGradient>
+            <path fill="url(#a)" d="M18 16.594c0 .773-.633 1.406-1.406 1.406h-15.188c-.773 0-1.406-.633-1.406-1.406v-15.188c0-.773.633-1.406 1.406-1.406h15.188c.773 0 1.406.633 1.406 1.406v15.188z"/>
+          </g>
+          <path fill="#fff" d="M11.734 10.772h-1.202l-.38 2.658h-1.013l.367-2.658h-1.392l-.38 2.658h-1.012l.367-2.658h-1.19v-.949h1.329l.228-1.645h-1.19v-.95h1.316l.368-2.658h1.025l-.38 2.658h1.405l.367-2.658h1.025l-.38 2.658h1.088v.949h-1.215l-.228 1.645h1.076v.95zm-3.266-2.595l-.227 1.646h1.405l.228-1.645h-1.406z"/>
+        </svg>
+
+      </a>
+    </div>
+
+    <div class="flexItem2 drawer" v-class="
+      memoChange: isMemoChangeOpened,
+      memoRemove: isMemoRemoveOpened,
+      opened: isMemoChangeOpened !== isMemoRemoveOpened
+    ">
+      <ol class="memoLists">
+        <li v-repeat="titles" v-on="click: renderMemo( this.id )" class="memoList" v-class="current: +current.id === this.id, untitled: this.title">
+          <span title="{{title}}">{{title}}</span>
+          <i v-on="click: removeMemo( this.id )" class="removeBtn fa fa-trash-o"></i>
         </li>
       </ol>
     </div>
-    <div class="flexItem2 input-area">
+
+    <div class="flexItem3 input-area">
       <textarea v-model="current.md" autofocus></textarea>
+      <a class="download" title="{{current.title}}.md" download="{{current.title}}.md" href="{{current.md | createObjectURL}}">
+        <i class="fa fa-download"></i>
+      </a>
     </div>
-    <div class="flexItem3 output-area" v-html="current.md | marked"></div>
+
+    <div class="flexItem4 output-area" v-html="current.md | marked"></div>
   </div>
-  <a class="download" title="{{current.title}}.md" download="{{current.title}}.md" href="{{current.md | createObjectURL}}">Download This Markdown</a>
 
 
   <script src="js/vue.min.js"></script>

@@ -32,6 +32,8 @@ var app = new Vue({
   data: {
     defID: 0,
     defTitle: 'untitled',
+    isMemoChangeOpened: true,
+    isMemoRemoveOpened: false,
     current: {
       id: 0,
       title: '',
@@ -88,6 +90,32 @@ var app = new Vue({
         // app.syncStorage( true ) とかそんな感じ？
         app.syncStorage();
       });
+    },
+
+    // 通常のMemolistsとメモ削除用のlistsの切り替え
+    changeMenu: function( value ){
+      console.log( 'changeMenu' );
+      console.log( '  value: ' + value );
+
+      var change = this.isMemoChangeOpened;
+      var remove = this.isMemoRemoveOpened;
+
+      if( value === 'change' ){
+        this.isMemoChangeOpened = !this.isMemoChangeOpened;
+        if( this.isMemoRemoveOpened ){
+          this.isMemoRemoveOpened = !this.isMemoRemoveOpened;
+        }
+        return;
+      }
+
+      if( value === 'remove' ){
+        this.isMemoRemoveOpened = !this.isMemoRemoveOpened;
+        if( this.isMemoChangeOpened ){
+          this.isMemoChangeOpened = !this.isMemoChangeOpened;
+        }
+        return;
+      }
+
     },
 
     // 入力されたMarkdownからメモのタイトルを作成して差し替え

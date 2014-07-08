@@ -11,8 +11,129 @@ body {
   overflow: hidden;
 }
 
-.memoList.current {
-  color: red;
+.menu {
+  background-color: #2f3d42;
+}
+
+.menu i {
+  color: #fff;
+  display: block;
+  text-align: center;
+  height: 28px;
+  padding-top: 12px;
+}
+
+.menu i:hover {
+  background-color: #202b2e;
+}
+
+.menu .toggleMenuBtnToChange.current {
+  background-color: #202b2e;
+}
+
+.menu .toggleMenuBtnToRemove.current {
+  background-color: #301b1c;
+}
+
+.githubLink {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  width: 18px;
+}
+
+#logotype {
+  height: 60px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+#logomark {
+  height: 18px;
+  display: block;
+}
+
+.drawer {
+  background-color: #202b2e;
+  color: #fff;
+  font-size: 14px;
+}
+
+.drawer.opened {
+}
+
+.drawer .removeBtn {
+  position: absolute;
+  right: 0.5em;
+  top: 0.1em;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  box-sizing: border-box;
+  padding-top: 0.8em;
+  padding-left: 0.85em;
+  background-color: transparent;
+  transition: opacity 0.5s, background-color 0.25s;
+  opacity: 0;
+}
+
+.drawer.memoRemove .removeBtn {
+  opacity: 1;
+}
+
+.drawer.memoRemove .removeBtn:hover {
+  background-color: #d42a31;
+}
+
+.drawer .memoList:hover {
+  background-color: #141d1f;
+  cursor: pointer;
+}
+
+.drawer.memoRemove {
+  background-color: #301b1c;
+}
+
+.drawer.memoRemove .memoList {
+  padding-right: 3.5em;
+}
+
+.drawer.memoRemove .memoList:hover {
+  background-color: #211213;
+  cursor: pointer;
+}
+
+.memoLists {
+  padding: 0px;
+  margin: 0px;
+}
+
+.memoList {
+  list-style-type: none;
+  box-sizing: border-box;
+  padding: 0.8em 1em 0.55em;
+  position: relative;
+}
+
+.memoList span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.memoList span[title="untitled"] {
+  opacity: 0.2;
+}
+
+.memoList.current span {
+  opacity: 1;
+  color: #2fa9f4;
+}
+
+.memoRemove .memoList.current span {
+  opacity: 1;
+  color: #d42a31;
 }
 
 /* flex box styles */
@@ -23,33 +144,42 @@ body {
 }
 
 .flexItem1 {
-  -webkit-flex: 0 0 0px;
+  -webkit-flex: 0 0 44px;
   -webkit-order: 1;
-  transition: 0.3s;
-}
-
-.flexItem1.opened {
-  -webkit-flex: 0 0 200px;
 }
 
 .flexItem2 {
-  -webkit-flex: 1 1 50%;
+  -webkit-flex: 0 0 0px;
   -webkit-order: 2;
-  height: 100%;
+  transition: 0.25s;
 }
 
-.flexItem2 > textarea {
-  height: 100%;
+.flexItem2.opened {
+  -webkit-flex: 0 0 220px;
 }
 
 .flexItem3 {
   -webkit-flex: 1 1 50%;
   -webkit-order: 3;
+  height: 100%;
+}
+
+.flexItem3 > textarea {
+  height: 100%;
+}
+
+.flexItem4 {
+  -webkit-flex: 1 1 50%;
+  -webkit-order: 4;
+}
+
+.input-area {
+  position: relative;
 }
 
 .input-area > textarea {
   width: 100%;
-  background: #f6f6f6;
+  background-color: #f6f6f6;
   outline: 0;
   border: 0;
   margin: 0;
@@ -144,24 +274,30 @@ svg {
 /* download button */
 
 .download {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    z-index: 2;
-    background-color: #48c9b0;
-    color: #fff;
-    padding: 5px 10px 3px;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 10px;
+  position: absolute;
+  z-index: 2;
+  top: 5px;
+  right: 5px;
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  color: #2fa9f4;
+  padding-top: 0.35em;
+  padding-left: 0.5em;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+  background-color: transparent;
+  box-shadow: 0 1px 0px 1px rgba( 0,0,0,0 );
+  transition: box-shadow 0.25s, background-color 0.25s;
 }
 .download:hover {
-    background-color: #1abc9c;
+  background-color: #f6f6f6;
+  box-shadow: 0 1px 3px 1px rgba( 0,0,0,0.2 );
 }
 .download:not([href]) {
-    color: rgba(255,255,255,0.7);
-    background-color: #bdc3c7;
-    cursor: default;
-    pointer-events: none;
+  color: rgba(47, 61, 66, 0.2);
+  cursor: default;
+  pointer-events: none;
 }
