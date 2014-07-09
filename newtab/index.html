@@ -10,7 +10,7 @@
 
   <div class="flex">
     <div class="flexItem1 menu">
-      <i v-on="click: createNewMemo" class="fa fa-plus-square" title="Add new Memo"></i>
+      <i v-on="click: memoCreate" class="fa fa-plus-square" title="Add new Memo"></i>
       <i v-on="click: toggleMenu( 'change' )" v-class="current: isMemoChangeOpened" class="toggleMenuBtnToChange fa fa-file-text" title="Show the list"></i>
       <i v-on="click: toggleMenu( 'remove' )" v-class="current: isMemoRemoveOpened" class="toggleMenuBtnToRemove fa fa-scissors" title="Show the list to remove"></i>
       <a class="githubLink" href="https://github.com/saucer-jp/LiveMd" target="new">
@@ -44,9 +44,9 @@
       opened: isMemoChangeOpened !== isMemoRemoveOpened
     ">
       <ol class="memoLists">
-        <li v-repeat="titles" v-on="click: renderMemo( this.id )" class="memoList" v-class="current: +current.id === this.id, untitled: this.title">
+        <li v-repeat="titles" v-on="click: memoRender( this.id )" class="memoList" v-class="current: +current.id === this.id, untitled: this.title === this._const.title">
           <span title="{{title}}">{{title}}</span>
-          <i v-on="click: removeMemo( this.id )" class="removeBtn fa fa-trash-o"></i>
+          <i v-on="click: memoRemove( this.id )" class="removeBtn fa fa-trash-o"></i>
         </li>
       </ol>
     </div>
@@ -62,8 +62,8 @@
   </div>
 
 
-  <script src="js/vue.min.js"></script>
   <script src="js/marked.min.js"></script>
+  <script src="js/vue.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
