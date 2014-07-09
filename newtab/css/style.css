@@ -75,10 +75,12 @@ body {
   background-color: transparent;
   transition: opacity 0.5s, background-color 0.25s;
   opacity: 0;
+  pointer-events: none;
 }
 
-.drawer.memoRemove .removeBtn {
+.drawer.memoRemove.opened .removeBtn {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .drawer.memoRemove .removeBtn:hover {
