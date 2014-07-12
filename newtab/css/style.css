@@ -78,62 +78,62 @@ body {
   pointer-events: none;
 }
 
-.drawer.memoRemove.opened .removeBtn {
+.drawer.removeMemo.opened .removeBtn {
   opacity: 1;
   pointer-events: auto;
 }
 
-.drawer.memoRemove .removeBtn:hover {
+.drawer.removeMemo .removeBtn:hover {
   background-color: #d42a31;
 }
 
-.drawer .memoList:hover {
+.drawer .memo:hover {
   background-color: #141d1f;
   cursor: pointer;
 }
 
-.drawer.memoRemove {
+.drawer.removeMemo {
   background-color: #301b1c;
 }
 
-.drawer.memoRemove .memoList {
+.drawer.removeMemo .memo {
   padding-right: 3.5em;
 }
 
-.drawer.memoRemove .memoList:hover {
+.drawer.removeMemo .memo:hover {
   background-color: #211213;
   cursor: pointer;
 }
 
-.memoLists {
+.memos {
   padding: 0px;
   margin: 0px;
 }
 
-.memoList {
+.memo {
   list-style-type: none;
   box-sizing: border-box;
   padding: 0.8em 1em 0.55em;
   position: relative;
 }
 
-.memoList span {
+.memo span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
 }
 
-.memoList span[title="untitled"] {
+.memo span[title="untitled"] {
   opacity: 0.2;
 }
 
-.memoList.current span {
+.memo.current span {
   opacity: 1;
   color: #2fa9f4;
 }
 
-.memoRemove .memoList.current span {
+.removeMemo .memo.current span {
   opacity: 1;
   color: #d42a31;
 }

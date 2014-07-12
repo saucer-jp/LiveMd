@@ -1,38 +1,34 @@
 "use strict";
-
-var storage = window.localStorage;
-
 /* ----------
 storageの構造
 -------------
 storage: {
-  'currentID': '0',
-  'isMemoChangeOpened': 'true',
-  'isMemoRemoveOpened': 'false',
-  'titles': {
-    '0': {
-      'id': '0',
-      'title': 'str'
-    },
-    '1': {
-      'id': 1,
-      'title': 'str'
-    }
-  },
-  'md0': '',
-  'md1': '',
+  'storageVer': 'number',
+  'currentID': 'number',
+  'isMemoChangeOpened': 'bool',
+  'isMemoRemoveOpened': 'bool',
+  'memos': [{
+    'title': 'str',
+    'md': 'md0' // 実態のmdへのkey
+  },{
+    'title': 'str',
+    'md': 'md1' // 実態のmdへのkey
+  }],
+  'md0': 'str', // mdの実態
+  'md1': 'str', // mdの実態
 }; */
+
+
 
 var _const = {
   storageVer: '0.1',
-  id: 0,
   title: 'untitled',
-  md: '',
   regexp: {
     firstline: /.*/,
-    mdSyntax: /^[#|\*]* */ // TODO 削除するsyntaxを増やす
+    mdSyntax: /^[#|\*]* */, // TODO 削除するsyntaxを増やす
+    removeBtn: /removeBtn/
   },
-  selector: {
+  selectors: {
     inputArea: '.input-area textarea'
   },
   prefixes: {
@@ -40,48 +36,41 @@ var _const = {
   },
   keys: {
     storageVer: 'storageVer',
-    currentID: 'currentID',
+    currentIndex: 'currentIndex',
     isMemoChangeOpened: 'isMemoChangeOpened',
     isMemoRemoveOpened: 'isMemoRemoveOpened',
-    titles: 'titles'
-    // 各titleとmdのkeyについては
-    // 動的に生成され以下に格納されている
-    // data.indexes[ id ].title
-    // data.indexes[ id ].md
+    memos: 'memos'
   }
 };
 
-var app = new Vue({
 
+
+var app = new Vue({
   el: 'html',
   data: {
     _const: _const,
     isMemoChangeOpened: true,
     isMemoRemoveOpened: false,
     current: {
-      id: 0,
+      index: 0,
       title: '',
       md: ''
     },
-    titles: {}
+    memos: [],
+    $storage: window.localStorage
   },
 
-
-  // Vue.jsがDirectivesを作る前に動作させるもの
-  created: function(){
-    this.init();
-    this.watchChromeEvents();
-  },
 
 
   // Vue.jsの準備が完了してから動作させるもの
   ready: function(){
-    this.$watch( 'current.md', this.memoChanged );
+    this.init();
+    this.watchChromeEvents();
+    this.$watch( 'current.md', this.updatedMemo );
     this.$watch( 'isMemoChangeOpened', this.autoSave );
     this.$watch( 'isMemoRemoveOpened', this.autoSave );
-    this.$watch( 'current', this.autoSave ); // TODO こいつは3回走ってしまうのでなんとかしたい
-    this.$watch( 'indexes', this.autoSave );
   },
+
 
 
   filters: {
@@ -95,156 +84,32 @@ var app = new Vue({
       return url;
     },
 
-
     // Markdown to html
     marked: marked
   },
 
 
+
   methods: {
 
-//    memo: { // controller的な
+    init: function(){
+      // storageにデータがあったら持ってくる
+      if( this.$storage.getItem( this._const.keys.storageVer ) ){
+        this.syncStorage();
 
-      // ===================
-      // メモの表示
-      // ===================
-      memoRender: function( id ){
-        var inputArea = this._const.selector.inputArea;
-        this.setID( id );
-        this.setTitle( id );
-        this.setMD( id );
-        this.$el.querySelector( inputArea ).focus();
-        //this.autoSave( id );
-      },
-
-      // ===================
-      // リストから選択されたメモを削除する
-      // ===================
-      memoRemove: function( id ){
-        // 最後のメモは消さない
-        if( getIndexesCount() === 1 ){
-          return; // TODO 実際はなんか通知用関数を実行したい
-
-        // 複数メモがあったら消す
-        } else {
-          this.deleteIndex( id );
-          // TODO ↓こいつをautoSave()だけで終わらせたい
-          storage.removeItem( this.getMdKey( id ) ); // storageのメモも消す
-          storage.removeItem( this.getTitleKey( id ) ); // storageのタイトルも消す
-
-          // なおかつ、表示中のメモが消されたら
-          if( this.current.id === id ){
-            this.memoRender( this.getNearID( id ) );
-          }
-        }
-        //this.autoSave( id );
-      },
-
-      // ===================
-      // 新しいメモ作る
-      // ===================
-      memoCreate: function(){
-        var newID = this.getNewID();
-        var newMemo = getNewMemoObj( newID );
-        this.setIndex( newID, newMemo );
-        this.memoRender( newID );
-        //this.autoSave( id );
-      },
-
-      // ===================
-      // 表示中のメモが変更されたら
-      // ===================
-      memoChanged: function(){
-        this.setTitle( this.current.id );
-        //this.autoSave();
-      },
-    //},
-
-
-
-    // 未使用のIDを探して返す
-    getNewID: function(){
-      var id = Object.keys( this.indexes ).length;
-      var hasID = this.titles.hasOwnProperty( id );
-      while( hasID ){
-        hasID = this.titles.hasOwnProperty( ++id );
-      }
-      return id;
-    },
-
-    // 引数のIDに近い使用中IDを返す。
-    // 表示中のメモを削除した場合に上か下のメモを表示するのに使用
-    getNearID: function( id ){
-      // TODO 未実装なので、とりあえず先頭のIDを返す 2014/07/07
-      return Object.keys( this.indexes ).shift();
-    },
-
-    getNewMemoObj: function( id ){
-      return {
-        id: id,
-        title: this._const.title,
-        md: this._const.md
-      };
-    },
-
-    getIndexesCount: function(){
-      return Object.keys( this.indexes ).length;
-    },
-
-    getMdKey: function( id ){
-      var prefix = this._const.prefixes.md;
-      return prefix + id;
-    },
-
-    getTitleKey: function( id ){
-      var prefix = this._const.prefixes.title;
-      return prefix + id;
-    },
-
-    setID: function( id ){
-      this.current.id = this.id;
-    },
-
-    setTitle: function( id ){
-      var key = this.getMdKey( id );
-      console.log( key );
-      var md = storage.getItem( key );
-      this.current.title = this.getFirstlineStr( md );
-    },
-
-    setMD: function( id ){
-      var key = this.getMdKey( id );
-      var md = storage.getItem( key );
-      if( md === null ){
-        this.current.md = this._const.md;
+      // storageにバージョンがなかったら初期設定をする
       } else {
-        this.current.md = md;
+        // storageにバージョンを設置
+        this.$storage.setItem( this._const.keys.storageVer, this._const.storageVer );
+
+        // storageに初期メモを設置
+        this.setMemo( this.memos );
+
+        // 保存
+        this.autoSave( this.current.index, true );
       }
     },
 
-    setIndex: function( key, val ){
-      // Vue.jsのdata binding的な都合で
-      // 一旦indexesをまるっと変数に入れて戻してる。
-      // なんかそうしないとbindingされない。困った。
-      var indexes = this.indexes;
-      indexes[ key ] = val;
-      this.indexes = indexes;
-    },
-
-    deleteIndex: function( key ){
-      // Vue.jsのdata binding的な都合で
-      // 一旦indexesをまるっと変数に入れて戻してる。
-      // なんかそうしないとbindingされない。困った。
-      var indexes = this.indexes;
-      delete indexes[ key ];
-      this.indexes = indexes;
-    },
-
-
-
-
-
-    // -----------------------------------------------------
 
 
     // Chrome独自のイベントを監視
@@ -253,21 +118,19 @@ var app = new Vue({
       // Chromeのタブ切り替えを監視
       var tabsChanged = chrome.tabs.onSelectionChanged
       tabsChanged.addListener(function(tabId, selectInfo){
-        // TODO storageとtitlesの同期だけして、現在のIDをrennderしたい
-        // app.syncStorage( true ) とかそんな感じ？
-        app.syncStorage();
+        app.init();
       });
 
       // Chromeのウィンドウ切り替えを監視
       var winChanged = chrome.windows.onFocusChanged
       winChanged.addListener(function(windowId){
-        // TODO storageとtitlesの同期だけして、現在のIDをrennderしたい
-        // app.syncStorage( true ) とかそんな感じ？
-        app.syncStorage();
+        app.init();
       });
     },
 
-    // 通常のMemolistsとメモ削除用のlistsの切り替え
+
+
+    // 通常のメモリストとメモ削除用のリストの切り替え
     toggleMenu: function( value ){
       if( value === 'change' ){
         this.isMemoChangeOpened = !this.isMemoChangeOpened;
@@ -282,10 +145,161 @@ var app = new Vue({
           this.isMemoChangeOpened = !this.isMemoChangeOpened;
         }
       }
-      this.autoSave();
     },
 
-    // Markdownの一行目を取得しつつMarkdownのsyntaxを削除して返す
+
+
+    // メモの表示
+    renderMemo: function( event ){
+      var index;
+
+      // 本来はeventだけとって判定したいのだけれど
+      // 内部的にrenderが呼ばれる場合に
+      // 引数にeventではなくindexが入るのでここで切り分け
+      if( typeof event === 'number' ){
+        index = event;
+
+      // preventdefault的な方法で簡単にできなかったので
+      // removeBtnからのバブリングをここで弾く
+      } else {
+        var removeBtn = this.$root.$data._const.regexp.removeBtn;
+        var srcElement = event.srcElement.className;
+        var clickedRemoveBtn = removeBtn.test( srcElement );
+        if( clickedRemoveBtn ){
+          return;
+
+        // removeBtnから以外のクリックは通す
+        } else {
+          index = event.targetVM.$index;
+        }
+      }
+
+      var memo = this.memos[ index ];
+      var md = this.getMd( memo.md ) || '';
+      var inputArea = this._const.selectors.inputArea;
+      this.setIndex( index );
+      this.setTitle( index, md );
+      this.setMd( md );
+      this.$el.querySelector( inputArea ).focus();
+    },
+
+
+
+    // リストから選択されたメモを削除する
+    removeMemo: function( memo ){
+      var data = memo.$root.$data;
+      var thisIndex = memo.$index;
+      var currentIndex = data.current.index;
+
+      // 最後のメモは消さない
+      if( data.memos.length === 1 ){
+        return; // TODO 実際はなんか通知用関数を実行したい
+
+      // 複数メモがあったら消す
+      } else {
+        this.$storage.removeItem( memo.$data.md );
+        this.memos.$remove( memo.$data );
+
+        // なおかつ、表示中のメモが消されたら
+        if( thisIndex === currentIndex ){
+          this.renderMemo( this.getNearIndex( thisIndex ) );
+          return;
+        }
+
+        // 現在表示されているメモより小さいindex番号の
+        // メモが削除された場合は表示中メモのindex番号がひとつ減る
+        if ( thisIndex < currentIndex ){
+          this.renderMemo( currentIndex - 1 );
+          return;
+        }
+
+        if( thisIndex > currentIndex ){
+          this.autoSave( currentIndex );
+          return;
+        }
+      }
+    },
+
+
+
+    // 新しいメモ作る
+    createMemo: function(){
+      var index = this.memos.length;
+      this.setMemo( this.memos );
+      this.setIndex( index );
+      this.renderMemo( index );
+    },
+
+
+
+    // 表示中のメモ内容が更新されたら
+    updatedMemo: function(){
+      var current = this.current;
+      this.setTitle( current.index, current.md );
+      this.autoSave( current.index );
+    },
+
+
+
+    createNewMemo: function( memos ){
+      var newMemo = {
+        title: 'untitled',
+        md: this.createNewMdKey( memos )
+      };
+      return newMemo;
+    },
+
+
+
+    // memosに設置されるmdkeyを発行する
+    // 重複するkeyは発行しない
+    createNewMdKey: function( memos ){
+      var len = memos.length;
+      var hasKey = false;
+      var preMdKey = this.$root.$data._const.prefixes.md;
+      var id = len;
+      var mdKey = '';
+
+      // memos配列を総当りして
+      // 同じmdKeyが存在しているかを判定
+      if( len === 0 ) return 'md0';
+      while( !hasKey ){
+        mdKey = preMdKey + id;
+        for( var i = 0; i < len; i++ ){
+          if( memos[ i ].md === mdKey ){
+            hasKey = true;
+          }
+        }
+        if( hasKey ){
+          id++;
+          hasKey = false;
+        } else {
+          return mdKey;
+        }
+      }
+    },
+
+
+
+    // 引数のindexに近い使用中indexを返す。
+    // 表示中のメモを削除した場合に上か下のメモを表示するのに使用
+    getNearIndex: function( index ){
+      // TODO 未実装なので、とりあえず先頭を返す 2014/07/13
+      return 0;
+    },
+
+
+
+    setTitle: function( index, md ){
+      var title = this.getFirstlineStr( md );
+      this.current.title = title;
+      this.memos[ index ].title = title;
+    },
+
+
+
+    // Markdownの一行目を取得しつつ
+    // Markdownのsyntaxを削除して返す
     getFirstlineStr: function( str ){
       if( str === '' ){
         return this._const.title;
@@ -300,105 +314,67 @@ var app = new Vue({
     },
 
 
-    // リストから選択されたメモを表示する
-    //renderMemo: function( id ){
-    //  var key = 'md' + id;
-    //  var md = storage.getItem( key );
 
-    //  if( md === null ){
-    //    this.current.md = '';
-    //  } else {
-    //    this.current.md = md;
-    //  }
-    //  this.current.id = id;
-    //  this.current.title = this.titles[ id ].title; // TODO ここ
+    setIndex: function( index ){
+      this.current.index = index;
+    },
 
-    //  this.$el.querySelector( this._const.selector.inputArea ).focus();
-    //},
+
+
+    setMemo: function( memos ){
+      this.memos.push( this.createNewMemo( memos ) );
+    },
+
+
+
+    getMd: function( mdKey ){
+      return JSON.parse( this.$storage.getItem( mdKey ) );
+    },
+
+
+
+    setMd: function( md ){
+      this.current.md = md;
+    },
+
 
 
     // storageへ自動セーブ
-    autoSave: function(){
-      var id = this.current.id;
-      var keys = this._const.keys;
+    // 第一引数がindex, 第二引数がtrueだった場合はすべての情報を保存
+    // 第一引数のみだった場合は保存される情報が振り分けられる
+    autoSave: function( index, allSave ){
+      var keys = this.$root.$data._const.keys;
 
-      storage.setItem( keys.currentID, id );
-      storage.setItem( keys.isMemoChangeOpened, this.isMemoChangeOpened );
-      storage.setItem( keys.isMemoRemoveOpened, this.isMemoRemoveOpened );
-      storage.setItem( keys.indexes, JSON.stringify( this.indexes ) );
-      //storage.setItem( this.indexes[ id ].title, this.current.title );
-      storage.setItem( this.indexes[ id ].md, this.current.md );
+      // 引数がbool値だったら表示の切替情報のみ保存
+      if( typeof index === 'boolean' || allSave === true ){
+        var isMemoChangeOpened = this.$root.$data.isMemoChangeOpened;
+        var isMemoRemoveOpened = this.$root.$data.isMemoRemoveOpened;
+        this.$storage.setItem( keys.isMemoChangeOpened, JSON.stringify( isMemoChangeOpened ) );
+        this.$storage.setItem( keys.isMemoRemoveOpened, JSON.stringify( isMemoRemoveOpened ) );
+      }
 
-      // TODO 'md0'とか'title0'とかもautoSave時に削除したい
-      // if(
-      //   メモリ上のindexesにあってstorageのindexesにないidがあったら
-      //   storageの'md0'なり'title0'なりを消す
-      // ){ code };
+      // 引数がnumberだった場合はメモ関連を保存
+      if ( typeof index === 'number' || allSave === true ){
+        var memos = this.$root.$data.memos;
+        var md = this.$root.$data.current.md;
+        this.$storage.setItem( keys.currentIndex, index );
+        this.$storage.setItem( keys.memos, JSON.stringify( memos ) );
+        this.$storage.setItem( this.memos[ index ].md, JSON.stringify( md ) );
+      }
     },
+
+
 
     // localStorageとの同期
+    // localstorageからデータを引っ張ってきてメモリ上に配置
     syncStorage: function(){
-
-      if( storage.getItem( this._const.keys.ver ) === null ) return;
-
-      // Vue.jsのdata binding的な都合で
-      // 一旦indexesをまるっと変数に入れて戻してる。
-      // なんかそうしないとbindingされない。困った。
-      var indexes = this.indexes;
-      indexes = this.replaceIndexesFromStorage( indexes );
-      this.indexes = indexes;
-
-      // 各種設定の読み込み
-      var keys = _const.keys;
-      this.isMemoChangeOpened = JSON.parse( storage.getItem( keys.isMemoChangeOpened ));
-      this.isMemoRemoveOpened = JSON.parse( storage.getItem( keys.isMemoRemoveOpened ));
-      this.current.id = JSON.parse( storage.getItem( keys.currentID ));
-      this.current.md = JSON.parse( storage.getItem( getMdKey( this.current.id )));
-    },
-
-    // メモリ上のindexesをstorage上のindexesに置き換える
-    replaceIndexesFromStorage: function( indexes ){
-      // メモリ上のtitlesの中身をすべて消す
-      var keys = Object.keys( indexes );
-      var length = keys.length;
-      while( length ){
-        --length;
-        delete indexes[ keys[ length ] ];
-      }
-
-      // storage上のtitlesの中身をすべて入れ込む
-      var newIndexes = JSON.parse( storage.getItem( _const.keys.indexes ));
-      var newKeys = Object.keys( newIndexes );
-      var newLength = newKeys.length;
-      while( newLength ){
-        --newLength;
-        indexes[ newKeys[ newLength ] ] = newIndexes[ newKeys[ newLength] ];
-      }
-    },
-
-
-    init: function(){
-
-
-      storage.clear();
-
-
-      // storageにデータがあったら持ってくる
-      if( storage.getItem( this._const.keys.ver ) ){
-        this.syncStorage();
-
-      // storageにデータがなかったら初期設定をする
-      } else {
-        // storageにバージョンを設置
-        // storageに初期メモを設置
-
-
-        // つくるのは
-        // current.id, current.title, current.md
-        storage.setItem( this._const.keys.ver, this._const.ver );
-        this.indexes[ _const.id ] = _const.initialIndex;
-        this.autoSave();
-      }
+      var data = this.$root.$data;
+      var keys = data._const.keys;
+      data.isMemoChangeOpened = JSON.parse( this.$storage.getItem( keys.isMemoChangeOpened ) );
+      data.isMemoRemoveOpened = JSON.parse( this.$storage.getItem( keys.isMemoRemoveOpened ) );
+      data.current.index = JSON.parse( this.$storage.getItem( keys.currentIndex ));
+      data.memos = JSON.parse( this.$storage.getItem( keys.memos ) );
+      data.current.md = JSON.parse( this.$storage.getItem( data.memos[ data.current.index ].md ) );
     }
   }
 });

@@ -10,10 +10,24 @@
 
   <div class="flex">
     <div class="flexItem1 menu">
-      <i v-on="click: memoCreate" class="fa fa-plus-square" title="Add new Memo"></i>
-      <i v-on="click: toggleMenu( 'change' )" v-class="current: isMemoChangeOpened" class="toggleMenuBtnToChange fa fa-file-text" title="Show the list"></i>
-      <i v-on="click: toggleMenu( 'remove' )" v-class="current: isMemoRemoveOpened" class="toggleMenuBtnToRemove fa fa-scissors" title="Show the list to remove"></i>
-      <a class="githubLink" href="https://github.com/saucer-jp/LiveMd" target="new">
+      <i
+        v-on="click: createMemo"
+        class="fa fa-plus-square"
+        title="Add new Memo"></i>
+      <i
+        v-on="click: toggleMenu( 'change' )"
+        v-class="current: isMemoChangeOpened"
+        class="toggleMenuBtnToChange fa fa-file-text"
+        title="Show the list"></i>
+      <i
+        v-on="click: toggleMenu( 'remove' )"
+        v-class="current: isMemoRemoveOpened"
+        class="toggleMenuBtnToRemove fa fa-scissors"
+        title="Show the list to remove"></i>
+      <a
+        class="githubLink"
+        href="https://github.com/saucer-jp/LiveMd"
+        target="new">
 
         <!-- id="logotype" -->
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 60" enable-background="new 0 0 18 60" id="logotype">
@@ -38,27 +52,43 @@
       </a>
     </div>
 
-    <div class="flexItem2 drawer" v-class="
-      memoChange: isMemoChangeOpened,
-      memoRemove: isMemoRemoveOpened,
-      opened: isMemoChangeOpened !== isMemoRemoveOpened
-    ">
-      <ol class="memoLists">
-        <li v-repeat="titles" v-on="click: memoRender( this.id )" class="memoList" v-class="current: +current.id === this.id, untitled: this.title === this._const.title">
+    <div
+      class="flexItem2 drawer"
+      v-class="
+        changeMemo: isMemoChangeOpened,
+        removeMemo: isMemoRemoveOpened,
+        opened: isMemoChangeOpened !== isMemoRemoveOpened">
+
+      <ol class="memos">
+        <li class="memo"
+          v-repeat="memos"
+          v-on="click: renderMemo"
+          v-class="
+            current: $parent.current.index === $index,
+            untitled: title === $parent._const.title">
+
           <span title="{{title}}">{{title}}</span>
-          <i v-on="click: memoRemove( this.id )" class="removeBtn fa fa-trash-o"></i>
+          <i
+            v-on="click: removeMemo( this )"
+            class="removeBtn fa fa-trash-o"></i>
         </li>
       </ol>
     </div>
 
     <div class="flexItem3 input-area">
       <textarea v-model="current.md" autofocus></textarea>
-      <a class="download" title="{{current.title}}.md" download="{{current.title}}.md" href="{{current.md | createObjectURL}}">
+      <a
+        class="download"
+        title="{{current.title}}.md"
+        download="{{current.title}}.md"
+        href="{{current.md | createObjectURL}}">
         <i class="fa fa-download"></i>
       </a>
     </div>
 
-    <div class="flexItem4 output-area" v-html="current.md | marked"></div>
+    <div
+      class="flexItem4 output-area"
+      v-html="current.md | marked"></div>
   </div>
 
 
