@@ -8,7 +8,7 @@ Using markdown to write a memo on browser with marked
 
 #### 0.2 2014/07/15
 
-* Added auto save function. It use localStorage.
+* Added auto save function. It uses localStorage.
 * Added create memo function. You can make some memos.
 * Designed UI
 * LiveMd synchronize all memos in some tabs and some windows.
