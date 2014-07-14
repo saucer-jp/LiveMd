@@ -6,6 +6,10 @@ Using markdown to write a memo on browser with marked
 
 ### Release Notes
 
+#### 0.2.1 2014/07/15
+
+* Fixed drawer scroll.
+
 #### 0.2 2014/07/15
 
 * Added auto save function. It uses localStorage.
