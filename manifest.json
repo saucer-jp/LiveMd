@@ -3,7 +3,7 @@
 
   "name": "LiveMd",
   "description": "Using markdown to write a memo on browser with marked",
-  "version": "0.2",
+  "version": "0.2.1",
 
   "icons": {
     "48": "icon.png",
