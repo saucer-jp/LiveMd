@@ -57,6 +57,7 @@ body {
   background-color: #202b2e;
   color: #fff;
   font-size: 14px;
+  overflow: auto;
 }
 
 .drawer.opened {
