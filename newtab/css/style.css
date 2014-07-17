@@ -393,7 +393,7 @@ pre > code {
   overflow: auto;
   white-space: pre;
   display: block;
-  background-color: #eee;
+  background-color: #F2F3EE;
   padding: 0.5em 0.7em;
 }
 
@@ -402,7 +402,7 @@ code {
   font-weight: 500;
   padding: 0.2em 0.5em;
   margin: 0 0.2em;
-  background-color: #eee;
+  background-color: #F2F3EE;
   border-radius: 4px;
   line-height: 1.2em;
   font-size: 0.9em;
