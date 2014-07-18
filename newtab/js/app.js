@@ -54,7 +54,9 @@ var app = new Vue({
     current: {
       index: 0,
       title: '',
-      md: ''
+      md: '',
+      allLettersLength: 0,
+      selectedLettersLength: 0
     },
     memos: [],
     $storage: window.localStorage
@@ -83,6 +85,8 @@ var app = new Vue({
       var url = URL.createObjectURL( blob );
       return url;
     },
+
+
 
     // Markdown to html
     marked: marked
@@ -236,6 +240,7 @@ var app = new Vue({
     updatedMemo: function(){
       var current = this.current;
       this.setTitle( current.index, current.md );
+      this.setAllLettersLength( current.md );
       this.autoSave( current.index );
     },
 
@@ -335,6 +340,40 @@ var app = new Vue({
 
     setMd: function( md ){
       this.current.md = md;
+    },
+
+
+
+    setSelectedLettersLength: function(){
+      var str = window.getSelection().toString();
+      this.$data.current.selectedLettersLength = this.getLettersLength( str );
+    },
+
+
+
+    setAllLettersLength: function( str ){
+      this.current.allLettersLength = this.getLettersLength( str );
+    },
+
+
+
+    // 引数文字列をMarkdownのシンタックスを
+    // 取り除いたうえでカウントして返す
+    getLettersLength: function( str ){
+      var _str = str;
+      // TODO _const.regexpに移動する
+      _str = _str.replace(/(^|\n)#{1,6}/g, '\n'); // heading
+      _str = _str.replace(/(^|\n)(=|-){2,}\n/g, '\n'); // heading
+      _str = _str.replace(/(^|\n) *(-|\*)/g, '\n'); // list
+      _str = _str.replace(/(^|\n)(\*|`){3,}/g, '\n'); // hr & block code
+      _str = _str.replace(/(^|\n)>/g, '\n'); //blockquote
+      _str = _str.replace(/`(.*)`/g, '$1'); // inline code
+      _str = _str.replace(/~{2}(.*)~{2}/g, '$1'); // del
+      _str = _str.replace(/\*+(.*)\*+/g, '$1'); // bold
+      _str = _str.replace(/\!?\[(.*)\](.*)/g, '$1'); // link
+      _str = _str.replace(/(\|:?--:?)+/g, '\n'); // table
+      _str = _str.replace(/\s/g, ''); // space
+      return _str.length;
     },
 
 

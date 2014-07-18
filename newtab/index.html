@@ -76,7 +76,17 @@
     </div>
 
     <div class="flexItem3 input-area">
-      <textarea v-model="current.md" autofocus></textarea>
+      <textarea
+        v-model="current.md"
+        v-on="
+        blur: setSelectedLettersLength,
+        click: setSelectedLettersLength,
+        select: setSelectedLettersLength"
+        autofocus></textarea>
+      <span class="lettersLength">
+        <span>{{current.selectedLettersLength ? current.selectedLettersLength + ' /' : ''}}</span>
+        <span v-text="current.allLettersLength"></span>
+      </span>
       <a
         class="download"
         title="{{current.title}}.md"

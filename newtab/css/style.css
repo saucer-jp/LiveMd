@@ -423,6 +423,22 @@ svg {
   height: 100%;
 }
 
+/* letters length */
+
+.lettersLength {
+  position: absolute;
+  z-index: 2;
+  top: 13px;
+  right: 47px;
+  color: #ccc;
+  font-weight: 600;
+  background-color: #f6f6f6;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
 
 /* download button */
 
