@@ -24,6 +24,11 @@
         v-class="current: isMemoRemoveOpened"
         class="toggleMenuBtnToRemove fa fa-scissors"
         title="Show the list to remove"></i>
+      <i
+        v-on="click: toggleInputArea"
+        v-class="active: isOnlyPreviewArea"
+        class="fa fa-eye previewModeIcon"
+        title="Switch preview mode"></i>
       <a
         class="githubLink"
         href="https://github.com/saucer-jp/LiveMd"
@@ -75,7 +80,10 @@
       </ol>
     </div>
 
-    <div class="flexItem3 input-area">
+    <div
+      v-class="closed: isOnlyPreviewArea"
+      class="flexItem3 input-area">
+
       <textarea
         v-model="current.md"
         v-on="
@@ -96,9 +104,12 @@
       </a>
     </div>
 
-    <div
-      class="flexItem4 output-area"
-      v-html="current.md | marked"></div>
+    <div class="flexItem4">
+      <div
+        class="output-area"
+        v-class="onlyPreviewAreaMode: isOnlyPreviewArea"
+        v-html="current.md | marked"></div>
+    </div>
   </div>
 
 

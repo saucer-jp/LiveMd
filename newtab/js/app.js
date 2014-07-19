@@ -51,6 +51,7 @@ var app = new Vue({
     _const: _const,
     isMemoChangeOpened: true,
     isMemoRemoveOpened: false,
+    isOnlyPreviewArea: false,
     current: {
       index: 0,
       title: '',
@@ -95,6 +96,11 @@ var app = new Vue({
 
 
   methods: {
+
+    toggleInputArea: function(){
+      var now = this.$root.$data.isOnlyPreviewArea;
+      this.$root.$data.isOnlyPreviewArea = !now;
+    },
 
     init: function(){
       // storageにデータがあったら持ってくる

@@ -82,6 +82,10 @@ body {
   background-color: #301b1c;
 }
 
+.previewModeIcon.active {
+  color: #2fa9f4;
+}
+
 .githubLink {
   position: absolute;
   bottom: 12px;
@@ -222,10 +226,19 @@ body {
 .flexItem4 {
   -webkit-flex: 1 1 50%;
   -webkit-order: 4;
+  background-color: #f6f6f6;
+  background-color: #fff;
+  overflow: scroll;
 }
 
 .input-area {
   position: relative;
+  transition: 0.25s;
+}
+
+.input-area.closed {
+  -webkit-flex: 0 0 0px;
+  overflow: hidden;
 }
 
 .input-area > textarea {
@@ -245,15 +258,26 @@ body {
 }
 
 .output-area {
+  background-color: #fff;
   box-sizing: border-box;
   padding: 1em 2em;
-  overflow: scroll;
   line-height: 1.8;
   color: #222;
   font-size: 0.98em;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
 }
+
+.output-area.onlyPreviewAreaMode {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.output-area.onlyPreviewAreaMode h1:before {
+  visibility: hidden;
+}
+
 
 
 /* outputed text styles */
@@ -291,6 +315,7 @@ h1:before {
   height: 0;
   margin: 0;
   border: 0;
+  visibility: hidden;
 }
 
 h2 {
