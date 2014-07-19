@@ -170,6 +170,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
+  height: 1.3em;
 }
 
 .memo span[title="untitled"] {
