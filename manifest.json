@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "LiveMd",
-  "description": "Using markdown to write a memo on browser with marked",
+  "description": "Using markdown to write a memo on browser with marked. ブラウザ上でMarkdownを使用したメモが、ライブプレビューをしながら手早くとれます。",
   "version": "0.2.3",
 
   "icons": {
