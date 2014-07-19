@@ -6,6 +6,10 @@ Download: [LiveMd](https://chrome.google.com/webstore/detail/livemd/gdkdfndgjifo
 
 ### Release Notes
 
+#### [v0.2.4] 2014-07-20
+
+* Added switch preview mode function.
+
 #### [v0.2.3] 2014-07-19
 
 * Added inputted text counter. The counter without Markdown syntax. But it is still not enough.
